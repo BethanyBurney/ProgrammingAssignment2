@@ -3,24 +3,23 @@
 ## the inverse, it will cache the inverse and only
 ## recompute the inverse when the matrix has changed.
 
-## This function will initialize the variable inv 
-## to NUll and chache the value into getreverse. 
+## This function will initialize the variable i
+## to NUll and cache the value into get. 
 ## The function is a vector holding commands set,
-## get, setreverse, and getreverse.
+## get, setinv, and getinv.
 
-makeCacheMatrix <- function(x = matrix()) {
-  inv <- NULL
+makeCacheMatrix <- function (x = matrix()) {
+  i <- NULL
   set <- function(y) {
     x <<- y
-    inv <<- NULL
-    
+    i <<- NULL
   }
-  get <- function()x
-  setreverse <- function(reverse) inv <<- reverse
-  getreverse <- function() inv
-  list(set = set, get = get, 
-       setreverse = setreverse,
-       getreverse = getreverse)
+  get <- function() x
+  setinv <- function(inv) i <<- inv
+  getinv <- function() i
+  list(set = set, get = get,
+       setinv = setinv,
+       getinv = getinv)
 }
 
 
@@ -32,17 +31,13 @@ makeCacheMatrix <- function(x = matrix()) {
 ## The new inv is then cached. 
 
 cacheSolve <- function(x, ...) {
-  inv <- x$getreverse()
-  if (!is.null(inv)) {
+  i <- x$getinv()
+  if(! is.null(i)) {
     message("getting cached data")
-    return(m)
-    
+    return(i)
   }
   data <- x$get()
-  r <- nrow(x)
-  c <- ncol(x)
-  i <- diag(1, r, c)
-  inv <- solve(data, i, ...)
-  x$setreverse(m)
-  m
+  i <- solve(data, ...)
+  x$setinv(i)
+  i
 }
